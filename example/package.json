@@ -1,0 +1,29 @@
+{
+	"private": true,
+	"scripts": {
+		"start": "parcel src/index.html",
+		"build": "parcel build --out-dir build src/index.html --public-url ./"
+	},
+	"dependencies": {
+		"parcel-bundler": "^1.4.1",
+		"parcel-plugin-sw-cache": "mischnic/parcel-plugin-sw-cache"
+	},
+	"cache": {
+		"prodOnly": false,
+		"strategy": "inject",
+		"swSrc": "./src/sw.js"
+	},
+	"_cache":{
+		"prodOnly": false,
+		"runtimeCaching": [
+			{
+				"urlPattern": ["http://cors-anywhere.herokuapp.com/http://tycho.usno.navy.mil/cgi-bin/time.pl"],
+				"handler": "networkFirst"
+			},
+			{
+				"urlPattern": "https://cdn.rawgit.com/parcel-bundler/website/01a1f7dd/src/assets/parcel%403x.png",
+				"handler": "cacheFirst"
+			}
+		]
+	}
+}
