@@ -8,6 +8,6 @@
   "license": "MIT",
   "dependencies": {
     "replace-in-file": "^3.1.0",
-    "workbox-build": "^3.0.0-alpha.5"
+    "workbox-build": "^3.0.0-alpha.6"
   }
 }

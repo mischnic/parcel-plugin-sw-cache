@@ -1,23 +1,26 @@
 {
 	"private": true,
 	"scripts": {
+		"postinstall": "rm -rf node_modules/parcel-plugin-sw-cache && ln -s ../.. node_modules/parcel-plugin-sw-cache",
 		"start": "parcel src/index.html",
 		"build": "parcel build --out-dir build src/index.html --public-url ./"
 	},
 	"dependencies": {
-		"parcel-bundler": "^1.4.1",
+		"parcel-bundler": "^1.5.0",
 		"parcel-plugin-sw-cache": "mischnic/parcel-plugin-sw-cache"
 	},
-	"cache": {
+	"_cache": {
 		"prodOnly": false,
 		"strategy": "inject",
 		"swSrc": "./src/sw.js"
 	},
-	"_cache":{
+	"cache": {
 		"prodOnly": false,
 		"runtimeCaching": [
 			{
-				"urlPattern": ["http://cors-anywhere.herokuapp.com/http://tycho.usno.navy.mil/cgi-bin/time.pl"],
+				"urlPattern": [
+					"http://cors-anywhere.herokuapp.com/http://tycho.usno.navy.mil/cgi-bin/time.pl"
+				],
 				"handler": "networkFirst"
 			},
 			{
