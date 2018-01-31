@@ -90,7 +90,7 @@ module.exports = (bundler) => {
 			.then(() => {
 				logger.log('sw-cache: Service worker generation completed.');
 			}).catch((error) => {
-				status.error('sw-cache: Service worker generation failed: ' + error);
+				logger.error('sw-cache: Service worker generation failed: ' + error);
 			});
 		}
 

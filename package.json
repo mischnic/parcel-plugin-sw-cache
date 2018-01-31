@@ -1,9 +1,12 @@
 {
   "name": "parcel-plugin-sw-cache",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Plugin",
   "main": "index.js",
   "repository": "https://github.com/mischnic/parcel-plugin-sw-cache",
+  "bugs": {
+    "url": "https://github.com/mischnic/parcel-plugin-sw-cache/issues"
+  },
   "author": "Niklas Mischkulnig",
   "license": "MIT",
   "dependencies": {
