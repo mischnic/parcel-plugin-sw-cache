@@ -3,19 +3,23 @@
 	"scripts": {
 		"postinstall": "rm -rf node_modules/parcel-plugin-sw-cache && ln -s ../.. node_modules/parcel-plugin-sw-cache",
 		"start": "parcel src/index.html",
-		"build": "parcel build --out-dir build src/index.html --public-url ./"
+		"build": "parcel build --out-dir build src/index.html --public-url /"
 	},
-	"dependencies": {
+	"devDependencies": {
 		"parcel-bundler": "^1.5.0",
 		"parcel-plugin-sw-cache": "mischnic/parcel-plugin-sw-cache"
 	},
 	"_cache": {
-		"prodOnly": false,
 		"strategy": "inject",
 		"swSrc": "./src/sw.js"
 	},
 	"cache": {
 		"prodOnly": false,
+		"globIgnores": [
+			"index.html"
+		],
+		"navigateFallback": "undefined",
+		"templatedUrls": "undefined",
 		"runtimeCaching": [
 			{
 				"urlPattern": [
@@ -29,5 +33,4 @@
 			}
 		]
 	}
-
 }

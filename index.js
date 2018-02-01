@@ -24,6 +24,13 @@ module.exports = (bundler) => {
 		delete config.strategy;
 		delete config.prodOnly;
 
+
+		Object.keys(config).forEach(function(key) {
+			if(config[key] === "undefined"){
+				config[key] = undefined;
+			}
+		});
+
 		if(strategy === "inject"){
 			if(config.swSrc){
 				config.swSrc = path.resolve(config.swSrc);
@@ -37,7 +44,7 @@ module.exports = (bundler) => {
 				globDirectory: outDir,
 				globPatterns: ['**\/*.{html,js,css,jpg,png}'],
 				swDest: swDest,
-				"templatedUrls": {
+				templatedUrls: {
 					"/": ["index.html"]
 				}
 			}, config))
