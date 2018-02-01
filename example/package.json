@@ -15,11 +15,6 @@
 	},
 	"cache": {
 		"prodOnly": false,
-		"globIgnores": [
-			"index.html"
-		],
-		"navigateFallback": "undefined",
-		"templatedUrls": "undefined",
 		"runtimeCaching": [
 			{
 				"urlPattern": [

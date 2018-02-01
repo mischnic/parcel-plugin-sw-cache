@@ -3,6 +3,17 @@ const fs = require('fs');
 const workbox = require('workbox-build');
 const replace = require('replace-in-file');
 
+function fixRegexpArray(arr, key){
+	if(arr[key]){
+		for(let i = 0; i < arr[key].length; i++){
+			const val = arr[key][i];
+			if(Array.isArray(val)){
+				arr[key][i] = new RegExp(val[0], val[1]);
+			}
+		}
+	}
+}
+
 module.exports = (bundler) => {
 
 	const logger = bundler.logger;
@@ -11,7 +22,7 @@ module.exports = (bundler) => {
 
 
 	bundler.on('bundled', (bundle) => {
-		const config = JSON.parse(fs.readFileSync(path.join(path.dirname(bundler.options.cacheDir), "package.json"))||"{}").cache;
+		const config = JSON.parse(fs.readFileSync(path.join(path.dirname(bundler.options.cacheDir), "package.json"))||"{}").cache || {};
 
 		if(config.disablePlugin) return;
 
@@ -30,6 +41,9 @@ module.exports = (bundler) => {
 				config[key] = undefined;
 			}
 		});
+
+		fixRegexpArray(config, "ignoreUrlParametersMatching");
+		fixRegexpArray(config, "navigateFallbackWhitelist");
 
 		if(strategy === "inject"){
 			if(config.swSrc){
