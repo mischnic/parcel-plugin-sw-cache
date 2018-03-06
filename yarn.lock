@@ -338,8 +338,8 @@ regenerator-runtime@^0.11.0:
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
 
 replace-in-file@^3.1.0:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/replace-in-file/-/replace-in-file-3.1.1.tgz#84052a6948771e8833a0738a0eb905feb0c9c7f4"
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/replace-in-file/-/replace-in-file-3.2.0.tgz#c28836ca936af2d56193f671a6c4f6c51fdb6eb1"
   dependencies:
     chalk "^2.3.0"
     glob "^7.1.2"
@@ -440,7 +440,7 @@ workbox-broadcast-cache-update@^3.0.0-beta.2:
   dependencies:
     workbox-core "^3.0.0-beta.2"
 
-workbox-build@^3.0.0-alpha.6:
+workbox-build@^3.0.0-beta.2:
   version "3.0.0-beta.2"
   resolved "https://registry.yarnpkg.com/workbox-build/-/workbox-build-3.0.0-beta.2.tgz#6721d5bd9c52e991cbd56741f0bc182fa71b34d2"
   dependencies:
