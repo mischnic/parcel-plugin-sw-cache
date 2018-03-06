@@ -2,7 +2,7 @@
 	"private": true,
 	"scripts": {
 		"postinstall": "rm -rf node_modules/parcel-plugin-sw-cache && ln -s ../.. node_modules/parcel-plugin-sw-cache",
-		"start": "parcel src/index.html",
+		"start": "parcel src/index.html --public-url /",
 		"build": "parcel build --out-dir build src/index.html --public-url /"
 	},
 	"devDependencies": {
@@ -14,7 +14,7 @@
 		"swSrc": "./src/sw.js"
 	},
 	"cache": {
-		"prodOnly": false,
+		"inDev": true,
 		"runtimeCaching": [
 			{
 				"urlPattern": [
@@ -23,8 +23,15 @@
 				"handler": "networkFirst"
 			},
 			{
-				"urlPattern": "https://cdn.rawgit.com/parcel-bundler/website/01a1f7dd/src/assets/parcel%403x.png",
-				"handler": "cacheFirst"
+				"urlPattern": "https://raw.githubusercontent.com/parcel-bundler/website/01a1f7dd/src/assets/parcel@3x.png",
+				"handler": "cacheFirst",
+				"options": {
+					"cacheableResponse": {
+						"statuses": [
+							0
+						]
+					}
+				}
 			}
 		]
 	}

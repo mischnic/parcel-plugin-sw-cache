@@ -3,6 +3,11 @@ const fs = require('fs');
 const workbox = require('workbox-build');
 const replace = require('replace-in-file');
 
+const supportsEmoji = process.platform !== 'win32' || process.env.TERM === 'xterm-256color';
+const icon = supportsEmoji ? "👷 " : "";
+const print = (...x) => console.log(icon, ...x);
+const printErr = (...x) => console.error(icon, ...x);
+
 function fixRegexpArray(arr, key){
 	if(arr[key]){
 		for(let i = 0; i < arr[key].length; i++){
@@ -16,52 +21,55 @@ function fixRegexpArray(arr, key){
 
 module.exports = (bundler) => {
 
-	const logger = bundler.logger;
 	const outDir = bundler.options.outDir;
 	const publicURL = bundler.options.publicURL;
+	const swDest = path.join(outDir,'sw.js');
+
 
 
 	bundler.on('bundled', (bundle) => {
-		const config = JSON.parse(fs.readFileSync(path.join(path.dirname(bundler.options.cacheDir), "package.json"))||"{}").cache || {};
+		// const config = JSON.parse(fs.readFileSync(path.join(path.dirname(bundler.options.cacheDir), "package.json"))||"{}").cache || {};
+		const config = bundle.entryAsset.package.cache;
 
 		if(config.disablePlugin) return;
 
-		if(process.env.NODE_ENV === "development"){
-			if(typeof config.prodOnly === "undefined" ? true : config.prodOnly){
-				return;
+		if(process.env.NODE_ENV === "development" && !config.inDev){
+			if(fs.existsSync(swDest)){
+				fs.unlinkSync(swDest);
 			}
+			return;
 		}
-		const strategy = config.strategy;
-		delete config.strategy;
-		delete config.prodOnly;
+
+		const swConfig = Object.assign({}, config);
+		delete swConfig.strategy;
+		delete swConfig.inDev;
 
 
-		Object.keys(config).forEach(function(key) {
-			if(config[key] === "undefined"){
-				config[key] = undefined;
+		Object.keys(swConfig).forEach(function(key) {
+			if(swConfig[key] === "undefined"){
+				swConfig[key] = undefined;
 			}
 		});
 
-		fixRegexpArray(config, "ignoreUrlParametersMatching");
-		fixRegexpArray(config, "navigateFallbackWhitelist");
+		fixRegexpArray(swConfig, "ignoreUrlParametersMatching");
+		fixRegexpArray(swConfig, "navigateFallbackWhitelist");
 
-		if(strategy === "inject"){
-			if(config.swSrc){
-				config.swSrc = path.resolve(config.swSrc);
+		if(config.strategy === "inject"){
+			if(swConfig.swSrc){
+				swConfig.swSrc = path.resolve(swConfig.swSrc);
 			} else {
-				logger.error("sw-cache: swSrc missing in config")
+				printErr("sw-cache: swSrc missing in config")
 				return;
 			}
-			const swDest = path.join(outDir,'sw.js');
 
 			workbox.injectManifest(Object.assign({
 				globDirectory: outDir,
-				globPatterns: ['**\/*.{html,js,css,jpg,png}'],
+				globPatterns: ['**\/*.{html,js,css,jpg,png,gif,svg,eot,ttf,woff,woff2}'],
 				swDest: swDest,
 				templatedUrls: {
 					"/": ["index.html"]
 				}
-			}, config))
+			}, swConfig))
 			.then(()=>
 				replace({
 					files: swDest,
@@ -69,9 +77,9 @@ module.exports = (bundler) => {
 					to: publicURL
 				})
 			).then(()=>
-				logger.log('sw-cache: Service worker generation completed.')
+				printErr("sw-cache: Service worker injection completed.")
 			).catch((error) => 
-				logger.error('sw-cache: Service worker generation failed: ' + error)
+				printErr("sw-cache: Service worker injection failed: " + error)
 			);
 		// } else if(strategy === "custom"){
 			// const bundleName = bundle.name;
@@ -82,11 +90,11 @@ module.exports = (bundler) => {
 			// }
 			// console.log(jss[0].name.substr(bundleName.length));
 		} else {
-			if(config.runtimeCaching){
-				for(let i = 0; i < config.runtimeCaching.length; i++){
-					const val = config.runtimeCaching[i].urlPattern;
+			if(swConfig.runtimeCaching){
+				for(let i = 0; i < swConfig.runtimeCaching.length; i++){
+					const val = swConfig.runtimeCaching[i].urlPattern;
 					if(Array.isArray(val)){
-						config.runtimeCaching[i].urlPattern = new RegExp(val[0], val[1]);
+						swConfig.runtimeCaching[i].urlPattern = new RegExp(val[0], val[1]);
 					}
 				}
 			}
@@ -95,7 +103,7 @@ module.exports = (bundler) => {
 				Object.assign({
 					globDirectory: outDir,
 					globPatterns: ['**\/*.{html,js,css,jpg,png}'],
-					swDest: path.join(outDir,'/sw.js'),
+					swDest: swDest,
 					navigateFallback: publicURL+"/index.html",
 					clientsClaim: true,
 					skipWaiting: true,
@@ -106,12 +114,12 @@ module.exports = (bundler) => {
 					// navigate fallback: needed? dist
 					// remove prefix dist or build
 
-				}, config)
+				}, swConfig)
 				)
 			.then(() => {
-				logger.log('sw-cache: Service worker generation completed.');
+				print("sw-cache: Service worker generation completed.");
 			}).catch((error) => {
-				logger.error('sw-cache: Service worker generation failed: ' + error);
+				printErr("sw-cache: Service worker generation failed: " + error);
 			});
 		}
 
