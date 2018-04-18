@@ -98,20 +98,17 @@ module.exports = (bundler) => {
 					}
 				}
 			}
-			
-			//handle case where public path is equal to '/'
-			// indexPath is used in generateSW
-			let indexPath = '/index.html';
-                          if(publicURL === '/'){			  	  
-                          indexPath = 'index.html'
-                        }
+
+			if(publicURL == "/"){
+				publicURL = "";
+			}
 
 			workbox.generateSW(
 				Object.assign({
 					globDirectory: outDir,
 					globPatterns: ['**\/*.{html,js,css,jpg,png}'],
 					swDest: swDest,
-					navigateFallback: publicURL + indexPath,
+					navigateFallback: publicURL+"/index.html",
 					clientsClaim: true,
 					skipWaiting: true,
 					"templatedUrls": {
