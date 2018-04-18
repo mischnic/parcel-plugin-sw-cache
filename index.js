@@ -22,7 +22,7 @@ function fixRegexpArray(arr, key){
 module.exports = (bundler) => {
 
 	const outDir = bundler.options.outDir;
-	const publicURL = bundler.options.publicURL;
+	let publicURL = bundler.options.publicURL;
 	const swDest = path.join(outDir,'sw.js');
 
 
