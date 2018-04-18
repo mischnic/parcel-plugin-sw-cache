@@ -4,9 +4,15 @@
 
 A [Parcel](https://parceljs.org/) plugin to run [workbox-build](https://github.com/GoogleChrome/workbox) after every build.
 
+```sh
+yarn add -D parcel-plugin-sw-cache
+# or
+npm install -D parcel-plugin-sw-cache
+```
+
 The plugin is configured using the `cache` object inside `package.json` of your project. ([Example](example/package.json)).
 Configuration keys used by the plugin (default options first):
-```javascript
+```js
 {
     "name": "Some app",
     //...

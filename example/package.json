@@ -6,8 +6,8 @@
 		"build": "parcel build --out-dir build src/index.html --public-url /"
 	},
 	"devDependencies": {
-		"parcel-bundler": "^1.5.0",
-		"parcel-plugin-sw-cache": "mischnic/parcel-plugin-sw-cache"
+		"parcel-bundler": "^1.7.1",
+		"parcel-plugin-sw-cache": "^0.2.0"
 	},
 	"_cache": {
 		"strategy": "inject",

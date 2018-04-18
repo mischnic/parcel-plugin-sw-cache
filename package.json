@@ -1,7 +1,7 @@
 {
 	"name": "parcel-plugin-sw-cache",
-	"version": "0.2.0",
-	"description": "Plugin",
+	"version": "0.2.1",
+	"description": "A parcel plugin for workbox serviceworker (pre)caching",
 	"main": "index.js",
 	"repository": "https://github.com/mischnic/parcel-plugin-sw-cache",
 	"bugs": {
