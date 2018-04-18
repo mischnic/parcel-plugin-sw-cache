@@ -99,6 +99,10 @@ module.exports = (bundler) => {
 				}
 			}
 
+			if(publicURL == "/"){
+				publicURL = "";
+			}
+
 			workbox.generateSW(
 				Object.assign({
 					globDirectory: outDir,
