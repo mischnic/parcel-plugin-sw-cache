@@ -59,6 +59,12 @@ module.exports = bundler => {
 				return;
 			}
 
+			if (sw.injectionPointRegexp) {
+				sw.injectionPointRegexp = new RegExp(
+					sw.injectionPointRegexp[0],
+					sw.injectionPointRegexp[1]
+				);
+			}
 
 			workbox
 				.injectManifest(

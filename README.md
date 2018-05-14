@@ -29,7 +29,7 @@ The remaining properties in this object will be passed to `generateSW` or `injec
 
 No configuration options are mandatory, the default configuration wil work just fine. (Creating a service worker to precache all files in the output directory without runtime caching). For the default parameters passed to workbox-build see [here](index.js) (i.e. precaching all html, js, css, jpg and png files).
 
-To specify a RegExp, use an array instead (`ignoreUrlParametersMatching`, `navigateFallbackWhitelist`, `runtimeCaching.urlPattern`).
+To specify a RegExp, use an array instead (`ignoreUrlParametersMatching`, `navigateFallbackWhitelist`, `runtimeCaching.urlPattern`, `injectionPointRegexp`).
 ```js
 runtimeCaching: [
     {
