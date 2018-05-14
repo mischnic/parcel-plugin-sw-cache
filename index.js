@@ -31,9 +31,13 @@ module.exports = bundler => {
 
 		if (config.disablePlugin) return;
 
+		if(config.swDest){
+			config.swDest = path.join(outDir, config.swDest);
+		}
+
 		if (process.env.NODE_ENV === "development" && !config.inDev) {
-			if (fs.existsSync(swDest)) {
-				fs.unlinkSync(swDest);
+			if (fs.existsSync(config.swDest || swDest)) {
+				fs.unlinkSync(config.swDest || swDest);
 			}
 			return;
 		}
@@ -59,10 +63,10 @@ module.exports = bundler => {
 				return;
 			}
 
-			if (sw.injectionPointRegexp) {
-				sw.injectionPointRegexp = new RegExp(
-					sw.injectionPointRegexp[0],
-					sw.injectionPointRegexp[1]
+			if (swConfig.injectionPointRegexp) {
+				swConfig.injectionPointRegexp = new RegExp(
+					swConfig.injectionPointRegexp[0],
+					swConfig.injectionPointRegexp[1]
 				);
 			}
 
@@ -82,9 +86,9 @@ module.exports = bundler => {
 						swConfig
 					)
 				)
-				.then(() =>
+				.then(
 					replace({
-						files: swDest,
+						files: config.swDest || swDest,
 						from: /__PUBLIC/g,
 						to: publicURL
 					})

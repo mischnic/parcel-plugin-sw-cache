@@ -18,6 +18,8 @@ workbox.routing.registerRoute(
 	workbox.strategies.cacheFirst()
 );
 
+// __PUBLIC
+
 // Exmaple:
 // const articleHandler = workbox.strategies.networkFirst({
 //   cacheName: 'articles-cache',

@@ -11,10 +11,13 @@
 	},
 	"_cache": {
 		"strategy": "inject",
-		"swSrc": "./src/sw.js"
+		"swSrc": "./src/sw.js",
+		"swDest": "service-worker.js",
+		"inDev": true
 	},
 	"cache": {
 		"inDev": true,
+		"swDest": "service-worker.js",
 		"runtimeCaching": [
 			{
 				"urlPattern": [
