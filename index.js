@@ -1,40 +1,38 @@
-const path = require('path');
-const fs = require('fs');
-const workbox = require('workbox-build');
-const replace = require('replace-in-file');
+const path = require("path");
+const fs = require("fs");
+const workbox = require("workbox-build");
+const replace = require("replace-in-file");
 
-const supportsEmoji = process.platform !== 'win32' || process.env.TERM === 'xterm-256color';
+const supportsEmoji =
+	process.platform !== "win32" || process.env.TERM === "xterm-256color";
 const icon = supportsEmoji ? "👷 " : "";
 const print = (...x) => console.log(icon, ...x);
 const printErr = (...x) => console.error(icon, ...x);
 
-function fixRegexpArray(arr, key){
-	if(arr[key]){
-		for(let i = 0; i < arr[key].length; i++){
+function fixRegexpArray(arr, key) {
+	if (arr[key]) {
+		for (let i = 0; i < arr[key].length; i++) {
 			const val = arr[key][i];
-			if(Array.isArray(val)){
+			if (Array.isArray(val)) {
 				arr[key][i] = new RegExp(val[0], val[1]);
 			}
 		}
 	}
 }
 
-module.exports = (bundler) => {
-
+module.exports = bundler => {
 	const outDir = bundler.options.outDir;
 	let publicURL = bundler.options.publicURL;
-	const swDest = path.join(outDir,'sw.js');
+	const swDest = path.join(outDir, "sw.js");
 
-
-
-	bundler.on('bundled', (bundle) => {
+	bundler.on("bundled", bundle => {
 		// const config = JSON.parse(fs.readFileSync(path.join(path.dirname(bundler.options.cacheDir), "package.json"))||"{}").cache || {};
 		const config = bundle.entryAsset.package.cache;
 
-		if(config.disablePlugin) return;
+		if (config.disablePlugin) return;
 
-		if(process.env.NODE_ENV === "development" && !config.inDev){
-			if(fs.existsSync(swDest)){
+		if (process.env.NODE_ENV === "development" && !config.inDev) {
+			if (fs.existsSync(swDest)) {
 				fs.unlinkSync(swDest);
 			}
 			return;
@@ -44,9 +42,8 @@ module.exports = (bundler) => {
 		delete swConfig.strategy;
 		delete swConfig.inDev;
 
-
 		Object.keys(swConfig).forEach(function(key) {
-			if(swConfig[key] === "undefined"){
+			if (swConfig[key] === "undefined") {
 				swConfig[key] = undefined;
 			}
 		});
@@ -54,34 +51,47 @@ module.exports = (bundler) => {
 		fixRegexpArray(swConfig, "ignoreUrlParametersMatching");
 		fixRegexpArray(swConfig, "navigateFallbackWhitelist");
 
-		if(config.strategy === "inject"){
-			if(swConfig.swSrc){
+		if (config.strategy === "inject") {
+			if (swConfig.swSrc) {
 				swConfig.swSrc = path.resolve(swConfig.swSrc);
 			} else {
-				printErr("sw-cache: swSrc missing in config")
+				printErr("sw-cache: swSrc missing in config");
 				return;
 			}
 
-			workbox.injectManifest(Object.assign({
-				globDirectory: outDir,
-				globPatterns: ['**\/*.{html,js,css,jpg,png,gif,svg,eot,ttf,woff,woff2}'],
-				swDest: swDest,
-				templatedUrls: {
-					"/": ["index.html"]
-				}
-			}, swConfig))
-			.then(()=>
-				replace({
-					files: swDest,
-					from: /__PUBLIC/g,
-					to: publicURL
-				})
-			).then(()=>
-				printErr("sw-cache: Service worker injection completed.")
-			).catch((error) => 
-				printErr("sw-cache: Service worker injection failed: " + error)
-			);
-		// } else if(strategy === "custom"){
+
+			workbox
+				.injectManifest(
+					Object.assign(
+						{
+							globDirectory: outDir,
+							globPatterns: [
+								"**/*.{html,js,css,jpg,png,gif,svg,eot,ttf,woff,woff2}"
+							],
+							swDest: swDest,
+							templatedUrls: {
+								"/": ["index.html"]
+							}
+						},
+						swConfig
+					)
+				)
+				.then(() =>
+					replace({
+						files: swDest,
+						from: /__PUBLIC/g,
+						to: publicURL
+					})
+				)
+				.then(() =>
+					printErr("sw-cache: Service worker injection completed.")
+				)
+				.catch(error =>
+					printErr(
+						"sw-cache: Service worker injection failed: " + error
+					)
+				);
+			// } else if(strategy === "custom"){
 			// const bundleName = bundle.name;
 			// console.log(bundler.options);
 			// const jss = [];
@@ -90,42 +100,50 @@ module.exports = (bundler) => {
 			// }
 			// console.log(jss[0].name.substr(bundleName.length));
 		} else {
-			if(swConfig.runtimeCaching){
-				for(let i = 0; i < swConfig.runtimeCaching.length; i++){
+			if (swConfig.runtimeCaching) {
+				for (let i = 0; i < swConfig.runtimeCaching.length; i++) {
 					const val = swConfig.runtimeCaching[i].urlPattern;
-					if(Array.isArray(val)){
-						swConfig.runtimeCaching[i].urlPattern = new RegExp(val[0], val[1]);
+					if (Array.isArray(val)) {
+						swConfig.runtimeCaching[i].urlPattern = new RegExp(
+							val[0],
+							val[1]
+						);
 					}
 				}
 			}
 
-			if(publicURL == "/"){
+			if (publicURL == "/") {
 				publicURL = "";
 			}
 
-			workbox.generateSW(
-				Object.assign({
-					globDirectory: outDir,
-					globPatterns: ['**\/*.{html,js,css,jpg,png}'],
-					swDest: swDest,
-					navigateFallback: publicURL+"/index.html",
-					clientsClaim: true,
-					skipWaiting: true,
-					"templatedUrls": {
-						"/": ["index.html"]
-					}
+			workbox
+				.generateSW(
+					Object.assign(
+						{
+							globDirectory: outDir,
+							globPatterns: ["**/*.{html,js,css,jpg,png}"],
+							swDest: swDest,
+							navigateFallback: publicURL + "/index.html",
+							clientsClaim: true,
+							skipWaiting: true,
+							templatedUrls: {
+								"/": ["index.html"]
+							}
 
-					// navigate fallback: needed? dist
-					// remove prefix dist or build
-
-				}, swConfig)
+							// navigate fallback: needed? dist
+							// remove prefix dist or build
+						},
+						swConfig
+					)
 				)
-			.then(() => {
-				print("sw-cache: Service worker generation completed.");
-			}).catch((error) => {
-				printErr("sw-cache: Service worker generation failed: " + error);
-			});
+				.then(() => {
+					print("sw-cache: Service worker generation completed.");
+				})
+				.catch(error => {
+					printErr(
+						"sw-cache: Service worker generation failed: " + error
+					);
+				});
 		}
-
 	});
 };

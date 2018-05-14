@@ -2781,8 +2781,8 @@ parcel-bundler@^1.7.1:
     ws "^4.0.0"
 
 parcel-plugin-sw-cache@^0.2.0:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/parcel-plugin-sw-cache/-/parcel-plugin-sw-cache-0.2.2.tgz#4cbba1cc06b1bdac2712aa19a98119afe75d0779"
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/parcel-plugin-sw-cache/-/parcel-plugin-sw-cache-0.2.3.tgz#55a4b7651a7cfccbf5818519192983152a40948d"
   dependencies:
     replace-in-file "^3.1.0"
     workbox-build "^3.0.0-beta.2"
