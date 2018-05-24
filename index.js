@@ -27,11 +27,11 @@ module.exports = bundler => {
 
 	bundler.on("bundled", bundle => {
 		// const config = JSON.parse(fs.readFileSync(path.join(path.dirname(bundler.options.cacheDir), "package.json"))||"{}").cache || {};
-		const config = Object.assign({}, bundle.entryAsset.package.cache);;
+		const config = Object.assign({}, bundle.entryAsset.package.cache);
 
 		if (config.disablePlugin) return;
 
-		if(config.swDest){
+		if (config.swDest) {
 			config.swDest = path.join(outDir, config.swDest);
 		}
 
@@ -45,7 +45,7 @@ module.exports = bundler => {
 		const swConfig = Object.assign({}, config);
 		delete swConfig.strategy;
 		delete swConfig.inDev;
-        
+
 		Object.keys(swConfig).forEach(function(key) {
 			if (swConfig[key] === "undefined") {
 				swConfig[key] = undefined;
@@ -62,7 +62,7 @@ module.exports = bundler => {
 				printErr("sw-cache: swSrc missing in config");
 				return;
 			}
-			
+
 			if (swConfig.injectionPointRegexp) {
 				swConfig.injectionPointRegexp = new RegExp(
 					swConfig.injectionPointRegexp[0],
