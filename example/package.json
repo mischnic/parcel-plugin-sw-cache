@@ -6,7 +6,7 @@
 		"build": "parcel build --out-dir build src/index.html --public-url /"
 	},
 	"devDependencies": {
-		"parcel-bundler": "^1.7.1",
+		"parcel-bundler": "^1.9.0",
 		"parcel-plugin-sw-cache": "^0.2.0"
 	},
 	"_cache": {
@@ -21,7 +21,7 @@
 		"runtimeCaching": [
 			{
 				"urlPattern": [
-					"http://cors-anywhere.herokuapp.com/http://tycho.usno.navy.mil/cgi-bin/time.pl"
+					"https://cors-anywhere.herokuapp.com/https://www.unixtimestamp.com"
 				],
 				"handler": "networkFirst"
 			},

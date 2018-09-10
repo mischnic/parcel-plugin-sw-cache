@@ -1,15 +1,14 @@
 import "./style.css";
 
-const xmlParser = sel => res => {
+const htmlParser = sel => res => {
 	const parser = new DOMParser();
-	const xmlDoc = parser.parseFromString(res, "text/xml");
-	return xmlDoc.querySelector(sel).innerHTML;
+	const xmlDoc = parser.parseFromString(res, "text/html");
+	return xmlDoc.querySelector(sel).innerText.split(" ")[0];
 };
 
-fetch(
-	"http://cors-anywhere.herokuapp.com/http://tycho.usno.navy.mil/cgi-bin/time.pl",
-	{ headers: { "x-requested-with": "fetch" } }
-)
+fetch("https://cors-anywhere.herokuapp.com/https://www.unixtimestamp.com", {
+	headers: { "x-requested-with": "fetch" }
+})
 	.then(res => res.text())
-	.then(xmlParser("usno > t"))
+	.then(htmlParser(".page-header ~ .text-danger"))
 	.then(res => (document.getElementById("content").innerText = res));
