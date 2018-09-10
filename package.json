@@ -22,4 +22,5 @@
 	"devDependencies": {
 		"prettier": "^1.12.1"
 	}
+	"files": []
 }

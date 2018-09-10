@@ -21,13 +21,15 @@ function fixRegexpArray(arr, key) {
 }
 
 module.exports = bundler => {
-	const outDir = bundler.options.outDir;
+	const { outDir, logLevel } = bundler.options;
 	let publicURL = bundler.options.publicURL;
 	const swDest = path.join(outDir, "sw.js");
 
 	bundler.on("bundled", bundle => {
 		// const config = JSON.parse(fs.readFileSync(path.join(path.dirname(bundler.options.cacheDir), "package.json"))||"{}").cache || {};
-		const entryAsset = bundle.entryAsset || Array.from(bundle.childBundles)[0].entryAsset;
+		const entryAsset =
+			bundle.entryAsset || Array.from(bundle.childBundles)[0].entryAsset;
+
 		entryAsset.getPackage().then(package => {
 			const config = Object.assign({}, package.cache);
 
@@ -152,7 +154,11 @@ module.exports = bundler => {
 						)
 					)
 					.then(() => {
-						print("sw-cache: Service worker generation completed.");
+						if (logLevel > 2) {
+							print(
+								"sw-cache: Service worker generation completed."
+							);
+						}
 					})
 					.catch(error => {
 						printErr(
