@@ -27,7 +27,8 @@ module.exports = bundler => {
 
 	bundler.on("bundled", bundle => {
 		// const config = JSON.parse(fs.readFileSync(path.join(path.dirname(bundler.options.cacheDir), "package.json"))||"{}").cache || {};
-		bundle.entryAsset.getPackage().then(package => {
+		const entryAsset = bundle.entryAsset || Array.from(bundle.childBundles)[0].entryAsset;
+		entryAsset.getPackage().then(package => {
 			const config = Object.assign({}, package.cache);
 
 			if (config.disablePlugin) return;
