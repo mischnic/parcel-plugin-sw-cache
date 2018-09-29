@@ -8,7 +8,8 @@
 		"url": "https://github.com/mischnic/parcel-plugin-sw-cache/issues"
 	},
 	"scripts": {
-		"lint": "prettier --tab-width 4 --use-tabs --write index.js example/src/*.js"
+		"lint": "prettier --tab-width 4 --use-tabs --write index.js test/index.js example/src/*.js",
+		"test": "mocha --timeout 10000 --exit"
 	},
 	"author": "Niklas Mischkulnig",
 	"license": "MIT",
@@ -17,10 +18,13 @@
 		"workbox-build": "^3.4.1"
 	},
 	"peerDependencies": {
-		"parcel-bundler": "^1.9.0"
+		"parcel-bundler": "~1.9.0"
 	},
 	"devDependencies": {
-		"prettier": "^1.12.1"
-	}
+		"mocha": "^5.2.0",
+		"parcel-bundler": "~1.9.7",
+		"prettier": "^1.12.1",
+		"rimraf": "^2.6.2"
+	},
 	"files": []
 }
