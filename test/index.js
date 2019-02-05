@@ -5,12 +5,13 @@ const fs = require("fs").promises;
 const Bundler = require("parcel-bundler");
 const rimraf = require("rimraf");
 
+const SwCachePlugin = require('../index')
 const getPath = (...f) => path.join(__dirname, "fixtures", ...f);
 
 const delay = t => new Promise(res => setTimeout(() => res(), t));
 const bundle = async (name, entry) => {
 	await rimraf.sync(getPath(name, ".dist"));
-	return await new Bundler([].concat(entry).map(v => getPath(name, v)), {
+	const bundler = new Bundler([].concat(entry).map(v => getPath(name, v)), {
 		publicUrl: "/",
 		outDir: getPath(name, ".dist"),
 
@@ -20,7 +21,10 @@ const bundle = async (name, entry) => {
 		hmr: false,
 		detailedReport: false,
 		logLevel: 1
-	}).bundle();
+	});
+	await SwCachePlugin(bundler);
+	const bundle = await bundler.bundle();
+	return bundle;
 };
 
 describe("test", function() {

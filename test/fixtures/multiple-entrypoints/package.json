@@ -1,7 +1,4 @@
 {
-	"dependencies": {
-		"parcel-plugin-sw-cache": "*"
-	},
 	"cache": {
 		"inDev": true,
 		"swDest": "service-worker.js",
