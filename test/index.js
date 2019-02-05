@@ -55,6 +55,19 @@ describe("test", function() {
 
 		assert.ok(regex.test(sw.toString()), "a correct sw is generated");
 	});
+
+	it("supports inject mode", async function() {
+		const folder = "inject";
+		const [bundleResult, expected] = await Promise.all([
+			bundle(folder, "index.html"),
+			fs.readFile(getPath(folder, ".sw.js")),
+		])
+		await delay(100);
+		const sw = await fs.readFile(
+			getPath(folder, ".dist", "service-worker.js")
+		);
+		assert.equal(sw.toString(), expected.toString(), "a correct injected sw is generated");
+	});
 });
 
 // "precache added assets"

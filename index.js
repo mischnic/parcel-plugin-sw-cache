@@ -90,7 +90,7 @@ module.exports = bundler => {
 							swConfig
 						)
 					)
-					.then(
+					.then(() =>
 						replace({
 							files: config.swDest || swDest,
 							from: /__PUBLIC/g,
