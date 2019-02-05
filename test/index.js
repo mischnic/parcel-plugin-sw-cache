@@ -5,7 +5,7 @@ const fs = require("fs").promises;
 const Bundler = require("parcel-bundler");
 const rimraf = require("rimraf");
 
-const SwCachePlugin = require('../index')
+const SwCachePlugin = require("../index");
 const getPath = (...f) => path.join(__dirname, "fixtures", ...f);
 
 const delay = t => new Promise(res => setTimeout(() => res(), t));
@@ -60,13 +60,17 @@ describe("test", function() {
 		const folder = "inject";
 		const [bundleResult, expected] = await Promise.all([
 			bundle(folder, "index.html"),
-			fs.readFile(getPath(folder, ".sw.js")),
-		])
+			fs.readFile(getPath(folder, ".sw.js"))
+		]);
 		await delay(100);
 		const sw = await fs.readFile(
 			getPath(folder, ".dist", "service-worker.js")
 		);
-		assert.equal(sw.toString(), expected.toString(), "a correct injected sw is generated");
+		assert.equal(
+			sw.toString(),
+			expected.toString(),
+			"a correct injected sw is generated"
+		);
 	});
 });
 
