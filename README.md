@@ -12,7 +12,9 @@ The plugin is configured using the `cache` object inside `package.json` of your 
 Configuration keys used by the plugin (default options first):
 ```js
 {
-    "name": "Some app",
+    "dependencies": {
+        // ...
+    },
     //...
     "cache": {
         "disablePlugin": false || true,
@@ -25,7 +27,22 @@ Configuration keys used by the plugin (default options first):
 
 The remaining properties in this object will be passed to `generateSW` or `injectManifest` (depending on `strategy`). See https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-build
 
-No configuration options are mandatory, the default configuration wil work just fine. (Creating a service worker to precache all files in the output directory without runtime caching). For the default parameters passed to workbox-build see [here](index.js) (i.e. precaching all html, js, css, jpg and png files).
+In `inject` mode, occurences of  `__PUBLIC` will be replaced with Parcel's public-url option. In this case, `swSrc` is also a required parameter.
+
+No configuration options are mandatory, the default configuration will work just fine. (Creating a service worker to precache all files in the output directory without runtime caching). The default parameters passed to workbox-build are (which precaching all html, js, css, jpg and png files):
+```json
+{
+    globDirectory: outDir,
+    globPatterns: ["**/*.{html,js,css,jpg,png}"],
+    swDest: swDest,
+    navigateFallback: publicURL + "/index.html",
+    clientsClaim: true,
+    skipWaiting: true,
+    templatedUrls: {
+        "/": ["index.html"]
+    }
+}
+```
 
 To specify a RegExp, use an array instead (`ignoreUrlParametersMatching`, `navigateFallbackWhitelist`, `runtimeCaching.urlPattern`, `injectionPointRegexp`).
 ```js
