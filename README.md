@@ -30,7 +30,7 @@ The remaining properties in this object will be passed to `generateSW` or `injec
 In `inject` mode, occurences of  `__PUBLIC` will be replaced with Parcel's public-url option. In this case, `swSrc` is also a required parameter.
 
 No configuration options are mandatory, the default configuration will work just fine. (Creating a service worker to precache all files in the output directory without runtime caching). With `strategy: "default"`, the default parameters passed to workbox-build are (which precaching all html, js, css, jpg and png files):
-```json
+```js
 {
     globDirectory: outDir,
     globPatterns: ["**/*.{html,js,css,jpg,png}"],
@@ -44,7 +44,7 @@ No configuration options are mandatory, the default configuration will work just
 }
 ```
 and with `inject`:
-```json
+```js
 {
     globDirectory: outDir,
     globPatterns: [
@@ -66,7 +66,7 @@ runtimeCaching: [
 ]
 ```
 becomes
-```json
+```js
 "runtimeCaching": [
     {
         "urlPattern": ["my-match\/api\.[0-9]+", "i"]
