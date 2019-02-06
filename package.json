@@ -14,17 +14,17 @@
 	"author": "Niklas Mischkulnig",
 	"license": "MIT",
 	"dependencies": {
-		"replace-in-file": "^3.1.0",
-		"workbox-build": "^3.4.1"
+		"replace-in-file": "^3.4.3",
+		"workbox-build": "^3.6.3"
 	},
 	"peerDependencies": {
 		"parcel-bundler": "~1.9.0"
 	},
 	"devDependencies": {
 		"mocha": "^5.2.0",
-		"parcel-bundler": "~1.9.7",
-		"prettier": "^1.12.1",
-		"rimraf": "^2.6.2"
+		"parcel-bundler": "~1.11.0",
+		"prettier": "^1.16.4",
+		"rimraf": "^2.6.3"
 	},
 	"files": []
 }

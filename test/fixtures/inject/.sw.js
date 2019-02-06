@@ -8,11 +8,11 @@ workbox.precaching.suppressWarnings()
 workbox.precaching.precacheAndRoute([
   {
     "url": "index.html",
-    "revision": "d41d8cd98f00b204e9800998ecf8427e"
+    "revision": "c83301425b2ad1d496473a5ff3d9ecca"
   },
   {
     "url": "/",
-    "revision": "74be16979710d4c4e7c6647856088456"
+    "revision": "075306287cb1f350fdfb49e376bc0a7f"
   }
 ])
 
