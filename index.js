@@ -97,16 +97,20 @@ module.exports = bundler => {
 							to: publicURL
 						})
 					)
-					.then(() =>
-						printErr(
-							"sw-cache: Service worker injection completed."
-						)
-					)
-					.catch(error =>
-						printErr(
-							"sw-cache: Service worker injection failed: " +
+					.then(
+						() => {
+							if (logLevel >= 3) {
+								print(
+									"sw-cache: Service worker injection completed."
+								);
+							}
+						},
+						error => {
+							printErr(
+								"sw-cache: Service worker injection failed: ",
 								error
-						)
+							);
+						}
 					);
 				// } else if(strategy === "custom"){
 				// const bundleName = bundle.name;
@@ -153,19 +157,21 @@ module.exports = bundler => {
 							swConfig
 						)
 					)
-					.then(() => {
-						if (logLevel > 2) {
-							print(
-								"sw-cache: Service worker generation completed."
+					.then(
+						() => {
+							if (logLevel >= 3) {
+								print(
+									"sw-cache: Service worker generation completed."
+								);
+							}
+						},
+						error => {
+							printErr(
+								"sw-cache: Service worker generation failed: ",
+								error
 							);
 						}
-					})
-					.catch(error => {
-						printErr(
-							"sw-cache: Service worker generation failed: " +
-								error
-						);
-					});
+					);
 			}
 		});
 	});
