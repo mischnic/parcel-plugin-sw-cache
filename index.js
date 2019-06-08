@@ -56,7 +56,7 @@ module.exports = bundler => {
 				}
 			});
 
-			fixRegexpArray(swConfig, "ignoreUrlParametersMatching");
+			fixRegexpArray(swConfig, "ignoreURLParametersMatching");
 			fixRegexpArray(swConfig, "navigateFallbackWhitelist");
 
 			if (config.strategy === "inject") {
@@ -83,7 +83,7 @@ module.exports = bundler => {
 									"**/*.{html,js,css,jpg,png,gif,svg,eot,ttf,woff,woff2}"
 								],
 								swDest: swDest,
-								templatedUrls: {
+								templatedURLs: {
 									"/": ["index.html"]
 								}
 							},
@@ -147,7 +147,7 @@ module.exports = bundler => {
 								navigateFallback: publicURL + "/index.html",
 								clientsClaim: true,
 								skipWaiting: true,
-								templatedUrls: {
+								templatedURLs: {
 									"/": ["index.html"]
 								}
 

@@ -38,7 +38,7 @@ No configuration options are mandatory, the default configuration will work just
     navigateFallback: publicURL + "/index.html",
     clientsClaim: true,
     skipWaiting: true,
-    templatedUrls: {
+    templatedURLs: {
         "/": ["index.html"]
     }
 }
@@ -51,13 +51,13 @@ and with `inject`:
         "**/*.{html,js,css,jpg,png,gif,svg,eot,ttf,woff,woff2}"
     ],
     swDest: swDest,
-    templatedUrls: {
+    templatedURLs: {
         "/": ["index.html"]
     }
 }
 ```
 
-To specify a RegExp, use an array instead (`ignoreUrlParametersMatching`, `navigateFallbackWhitelist`, `runtimeCaching.urlPattern`, `injectionPointRegexp`).
+To specify a RegExp, use an array instead (`ignoreURLParametersMatching`, `navigateFallbackWhitelist`, `runtimeCaching.urlPattern`, `injectionPointRegexp`).
 ```js
 runtimeCaching: [
     {

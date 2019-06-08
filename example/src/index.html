@@ -11,7 +11,8 @@
 	<script src="./index.js"></script>
 	<script>
 		if ('serviceWorker' in navigator) {
-			navigator.serviceWorker.register('service-worker.js')
+			const x = 'service-worker.js';
+			navigator.serviceWorker.register(x)
 				.then(function(registration) {
 					console.log('Registration successful, scope is:', registration.scope);
 				})
