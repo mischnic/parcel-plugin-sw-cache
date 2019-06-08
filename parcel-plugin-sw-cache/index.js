@@ -5,9 +5,10 @@ const replace = require("replace-in-file");
 
 const supportsEmoji =
 	process.platform !== "win32" || process.env.TERM === "xterm-256color";
-const icon = supportsEmoji ? "👷 " : "";
-const print = (...x) => console.log(icon, ...x);
-const printErr = (...x) => console.error(icon, ...x);
+const icon = supportsEmoji ? "👷" : "";
+const print = (...x) => console.log(icon, "parcel-plugin-sw-cache:", ...x);
+const printErr = (...x) =>
+	console.error(icon, "parcel-plugin-sw-cache:", ...x);
 
 function fixRegexpArray(arr, key) {
 	if (arr[key]) {
@@ -28,6 +29,7 @@ function findPackageDir(dir) {
 
 		dir = path.dirname(dir);
 	}
+	throw new Error("Couldn't find package.json!");
 }
 
 module.exports = bundler => {
@@ -70,13 +72,23 @@ module.exports = bundler => {
 			fixRegexpArray(swConfig, "navigateFallbackWhitelist");
 
 			if (config.strategy === "inject") {
-				if (swConfig.swSrc) {
+				if (!swConfig.swSrc) {
+					printErr("swSrc missing in config");
+					return;
+				}
+
+				try {
 					swConfig.swSrc = path.resolve(
 						findPackageDir(path.dirname(entryAsset.name)),
 						swConfig.swSrc
 					);
-				} else {
-					printErr("sw-cache: swSrc missing in config");
+					if (!fs.existsSync(swConfig.swSrc)) {
+						throw new Error(
+							swConfig.swSrc + " doesn't exist!"
+						);
+					}
+				} catch (e) {
+					printErr("loading swSrc failed,", e.message);
 					return;
 				}
 
@@ -113,26 +125,13 @@ module.exports = bundler => {
 					.then(
 						() => {
 							if (logLevel >= 3) {
-								print(
-									"sw-cache: Service worker injection completed."
-								);
+								print("Service worker injection completed.");
 							}
 						},
 						error => {
-							printErr(
-								"sw-cache: Service worker injection failed: ",
-								error
-							);
+							printErr("Service worker injection failed", error);
 						}
 					);
-				// } else if(strategy === "custom"){
-				// const bundleName = bundle.name;
-				// console.log(bundler.options);
-				// const jss = [];
-				// for(f of bundle.childBundles){
-				// 	jss.push(f);
-				// }
-				// console.log(jss[0].name.substr(bundleName.length));
 			} else {
 				if (swConfig.runtimeCaching) {
 					for (let i = 0; i < swConfig.runtimeCaching.length; i++) {
@@ -180,7 +179,7 @@ module.exports = bundler => {
 						},
 						error => {
 							printErr(
-								"sw-cache: Service worker generation failed: ",
+								"sw-cache: Service worker generation failed",
 								error
 							);
 						}
