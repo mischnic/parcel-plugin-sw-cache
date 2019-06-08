@@ -2,13 +2,13 @@ const path = require("path");
 const fs = require("fs");
 const workbox = require("workbox-build");
 const replace = require("replace-in-file");
+const rimraf = require("rimraf");
 
 const supportsEmoji =
 	process.platform !== "win32" || process.env.TERM === "xterm-256color";
 const icon = supportsEmoji ? "👷" : "";
 const print = (...x) => console.log(icon, "parcel-plugin-sw-cache:", ...x);
-const printErr = (...x) =>
-	console.error(icon, "parcel-plugin-sw-cache:", ...x);
+const printErr = (...x) => console.error(icon, "parcel-plugin-sw-cache:", ...x);
 
 function fixRegexpArray(arr, key) {
 	if (arr[key]) {
@@ -32,10 +32,29 @@ function findPackageDir(dir) {
 	throw new Error("Couldn't find package.json!");
 }
 
+function getConfigForEntry(file) {
+	const dir = path.dirname(file);
+	const pkgPath = findPackageDir(dir);
+	return require(path.join(dir, "package.json"));
+}
+
 module.exports = bundler => {
 	const { outDir, logLevel } = bundler.options;
 	let publicURL = bundler.options.publicURL;
 	const swDest = path.join(outDir, "sw.js");
+
+	{
+		let clearDist = true;
+		const config = getConfigForEntry(bundler.entryFiles[0]).cache;
+		clearDist =
+			typeof config.clearDist === "boolean"
+				? config.clearDist
+				: clearDist;
+
+		if (clearDist) {
+			rimraf.sync(path.join(outDir, "{*,.*}"));
+		}
+	}
 
 	bundler.on("bundled", bundle => {
 		// const config = JSON.parse(fs.readFileSync(path.join(path.dirname(bundler.options.cacheDir), "package.json"))||"{}").cache || {};
@@ -61,6 +80,8 @@ module.exports = bundler => {
 			const swConfig = Object.assign({}, config);
 			delete swConfig.strategy;
 			delete swConfig.inDev;
+			delete swConfig.clearDist;
+			delete swConfig.disablePlugin;
 
 			Object.keys(swConfig).forEach(function(key) {
 				if (swConfig[key] === "undefined") {
@@ -83,9 +104,7 @@ module.exports = bundler => {
 						swConfig.swSrc
 					);
 					if (!fs.existsSync(swConfig.swSrc)) {
-						throw new Error(
-							swConfig.swSrc + " doesn't exist!"
-						);
+						throw new Error(swConfig.swSrc + " doesn't exist!");
 					}
 				} catch (e) {
 					printErr("loading swSrc failed,", e.message);

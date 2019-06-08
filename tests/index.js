@@ -3,13 +3,11 @@ const assert = require("assert");
 const path = require("path");
 const fs = require("fs").promises;
 const Bundler = require("parcel-bundler");
-const rimraf = require("rimraf");
 
 const getPath = (...f) => path.join(__dirname, "fixtures", ...f);
 
 const delay = t => new Promise(res => setTimeout(() => res(), t));
 const bundle = async (name, entry) => {
-	await rimraf.sync(getPath(name, ".dist"));
 	const bundler = new Bundler([].concat(entry).map(v => getPath(name, v)), {
 		publicUrl: "/",
 		outDir: getPath(name, ".dist"),

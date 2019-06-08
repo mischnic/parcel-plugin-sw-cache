@@ -20,6 +20,7 @@ Configuration keys used by the plugin (default options first):
         "disablePlugin": false || true,
         "inDev": false || true,
         "strategy": "default" || "inject"
+        "clearDist": true || false
     }
     //...
 }
