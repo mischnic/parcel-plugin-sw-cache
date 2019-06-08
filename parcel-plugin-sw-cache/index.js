@@ -20,6 +20,16 @@ function fixRegexpArray(arr, key) {
 	}
 }
 
+function findPackageDir(dir) {
+	// Find the nearest package.json file within the current node_modules folder
+	const root = path.parse(dir).root;
+	while (dir !== root && path.basename(dir) !== "node_modules") {
+		if (fs.existsSync(path.join(dir, "package.json"))) return dir;
+
+		dir = path.dirname(dir);
+	}
+}
+
 module.exports = bundler => {
 	const { outDir, logLevel } = bundler.options;
 	let publicURL = bundler.options.publicURL;
@@ -61,7 +71,10 @@ module.exports = bundler => {
 
 			if (config.strategy === "inject") {
 				if (swConfig.swSrc) {
-					swConfig.swSrc = path.resolve(swConfig.swSrc);
+					swConfig.swSrc = path.resolve(
+						findPackageDir(path.dirname(entryAsset.name)),
+						swConfig.swSrc
+					);
 				} else {
 					printErr("sw-cache: swSrc missing in config");
 					return;
