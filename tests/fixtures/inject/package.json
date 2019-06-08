@@ -9,7 +9,7 @@
 	"cache": {
 		"inDev": true,
 		"strategy": "inject",
-		"swSrc": "test/fixtures/inject/sw-template.js",
+		"swSrc": "./sw-template.js",
 		"swDest": "service-worker.js"
 	}
 }

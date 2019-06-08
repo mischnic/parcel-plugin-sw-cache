@@ -11,6 +11,6 @@
 	},
 	"scripts": {
 		"lint": "prettier --tab-width 4 --use-tabs --write index.js test/index.js example/src/*.js",
-		"test": "mocha --timeout 10000 --exit"
+		"test": "mocha --timeout 10000 --exit tests/"
 	}
 }

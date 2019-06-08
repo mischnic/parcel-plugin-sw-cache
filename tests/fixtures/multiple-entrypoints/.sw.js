@@ -13,8 +13,9 @@
 
 importScripts\("https:\/\/storage\.googleapis\.com\/workbox-cdn\/releases\/[0-9]\.[0-9]\.[0-9]\/workbox-sw.js"\);
 
-workbox\.skipWaiting\(\);
-workbox\.clientsClaim\(\);
+workbox\.core\.skipWaiting\(\);
+
+workbox\.core\.clientsClaim\(\);
 
 \/\*\*
  \* The workboxSW\.precacheAndRoute\(\) method efficiently caches and responds to
@@ -35,10 +36,9 @@ self\.__precacheManifest = \[
     "revision": "[a-f0-9]+"
   }
 \]\.concat\(self\.__precacheManifest \|\| \[\]\);
-workbox\.precaching\.suppressWarnings\(\);
 workbox\.precaching\.precacheAndRoute\(self\.__precacheManifest, {}\);
 
-workbox\.routing\.registerNavigationRoute\("\/index\.html"\);
+workbox\.routing\.registerNavigationRoute\(workbox\.precaching\.getCacheKeyForURL\("\/index\.html"\)\);
 
-workbox\.routing\.registerRoute\(\/https:\\\/\\\/cors-anywhere\.herokuapp\.com\\\/https:\\\/\\\/www\.unixtimestamp\.com\/, workbox\.strategies\.networkFirst\(\), 'GET'\);
-workbox\.routing\.registerRoute\("https:\/\/raw\.githubusercontent\.com\/parcel-bundler\/website\/01a1f7dd\/src\/assets\/parcel@3x\.png", workbox\.strategies\.cacheFirst\({ plugins: \[new workbox\.cacheableResponse\.Plugin\({"statuses":\[0\]}\)\] }\), 'GET'\);
+workbox\.routing\.registerRoute\(\/https:\\\/\\\/cors-anywhere\.herokuapp\.com\\\/https:\\\/\\\/www\.unixtimestamp\.com\/, new workbox\.strategies\.NetworkFirst\(\), 'GET'\);
+workbox\.routing\.registerRoute\("https:\/\/raw\.githubusercontent\.com\/parcel-bundler\/website\/01a1f7dd\/src\/assets\/parcel@3x\.png", new workbox\.strategies\.CacheFirst\({ plugins: \[new workbox\.cacheableResponse\.Plugin\({ statuses: \[ 0 \] }\)\] }\), 'GET'\);

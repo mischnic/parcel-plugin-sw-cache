@@ -5,7 +5,6 @@ const fs = require("fs").promises;
 const Bundler = require("parcel-bundler");
 const rimraf = require("rimraf");
 
-const SwCachePlugin = require("../index");
 const getPath = (...f) => path.join(__dirname, "fixtures", ...f);
 
 const delay = t => new Promise(res => setTimeout(() => res(), t));
@@ -22,7 +21,6 @@ const bundle = async (name, entry) => {
 		detailedReport: false,
 		logLevel: 1
 	});
-	await SwCachePlugin(bundler);
 	const bundle = await bundler.bundle();
 	return bundle;
 };
