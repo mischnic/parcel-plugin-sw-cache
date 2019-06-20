@@ -27,7 +27,9 @@ describe("test", function() {
 	it("basic tests", async function() {
 		await bundle("basic", "index.html");
 
-		const regex = new RegExp(await fs.readFile(getPath("basic", "__sw__.js")));
+		const regex = new RegExp(
+			await fs.readFile(getPath("basic", "__sw__.js"))
+		);
 		await delay(100);
 
 		const sw = await fs.readFile(
