@@ -10,7 +10,7 @@
 		"prettier": "^1.18.2"
 	},
 	"scripts": {
-		"lint": "prettier --tab-width 4 --use-tabs --write index.js test/index.js example/src/*.js",
+		"lint": "prettier --tab-width 4 --use-tabs --write parcel-plugin-sw-cache/index.js tests/index.js example/src/*.js",
 		"test": "mocha --timeout 10000 --exit tests/"
 	}
 }

@@ -25,25 +25,19 @@ const bundle = async (name, entry) => {
 
 describe("test", function() {
 	it("basic tests", async function() {
-		const swPath = getPath("basic", ".dist", "service-worker.js");
-		try {
-			await fs.unlink(swPath);
-		} catch (e) {}
 		await bundle("basic", "index.html");
 
 		const regex = new RegExp(await fs.readFile(getPath("basic", ".sw.js")));
 		await delay(100);
 
-		const sw = await fs.readFile(swPath);
+		const sw = await fs.readFile(
+			getPath("basic", ".dist", "service-worker.js")
+		);
 
 		assert.ok(regex.test(sw.toString()), "a correct sw is generated");
 	});
 
 	it("basic tests with src directory", async function() {
-		const swPath = getPath("srcdir", ".dist", "service-worker.js");
-		try {
-			await fs.unlink(swPath);
-		} catch (e) {}
 		await bundle("srcdir", "src/index.html");
 
 		const regex = new RegExp(
@@ -51,20 +45,14 @@ describe("test", function() {
 		);
 		await delay(100);
 
-		const sw = await fs.readFile(swPath);
+		const sw = await fs.readFile(
+			getPath("srcdir", ".dist", "service-worker.js")
+		);
 
 		assert.ok(regex.test(sw.toString()), "a correct sw is generated");
 	});
 
 	it("multiple entry points", async function() {
-		const swPath = getPath(
-			"multiple-entrypoints",
-			".dist",
-			"service-worker.js"
-		);
-		try {
-			await fs.unlink(swPath);
-		} catch (e) {}
 		await bundle("multiple-entrypoints", ["index.html", "page.html"]);
 
 		const regex = new RegExp(
@@ -72,27 +60,22 @@ describe("test", function() {
 		);
 		await delay(100);
 
-		const sw = await fs.readFile(swPath);
+		const sw = await fs.readFile(
+			getPath("multiple-entrypoints", ".dist", "service-worker.js")
+		);
 
 		assert.ok(regex.test(sw.toString()), "a correct sw is generated");
 	});
 
 	it("supports inject mode", async function() {
-		const swPath = getPath("inject", ".dist", "service-worker.js");
-		try {
-			await fs.unlink(swPath);
-		} catch (e) {}
-		const folder = "inject";
-		const [bundleResult, expected] = await Promise.all([
-			bundle(folder, "index.html"),
-			fs.readFile(getPath(folder, ".sw.js"))
-		]);
-		await delay(100);
-		const sw = await fs.readFile(swPath);
-		assert.equal(
-			sw.toString(),
-			expected.toString(),
-			"a correct injected sw is generated"
+		await bundle("inject", "index.html");
+		const regex = new RegExp(
+			await fs.readFile(getPath("inject", ".sw.js"))
 		);
+		await delay(100);
+		const sw = await fs.readFile(
+			getPath("inject", ".dist", "service-worker.js")
+		);
+		assert.ok(regex.test(sw.toString()), "a correct sw is generated");
 	});
 });

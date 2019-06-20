@@ -11,7 +11,7 @@
  \* See https:\/\/goo\.gl\/2aRDsh
  \*\/
 
-importScripts\("https:\/\/storage\.googleapis\.com\/workbox-cdn\/releases\/[0-9]\.[0-9]\.[0-9]\/workbox-sw.js"\);
+importScripts\("https:\/\/storage\.googleapis\.com\/workbox-cdn\/releases\/[0-9]\.[0-9]\.[0-9]\/workbox-sw\.js"\);
 
 workbox\.core\.skipWaiting\(\);
 
@@ -35,6 +35,3 @@ self\.__precacheManifest = \[
 workbox\.precaching\.precacheAndRoute\(self\.__precacheManifest, {}\);
 
 workbox\.routing\.registerNavigationRoute\(workbox\.precaching\.getCacheKeyForURL\("\/index\.html"\)\);
-
-workbox\.routing\.registerRoute\(\/https:\\\/\\\/cors-anywhere\.herokuapp\.com\\\/https:\\\/\\\/www\.unixtimestamp\.com\/, new workbox\.strategies\.NetworkFirst\(\), 'GET'\);
-workbox\.routing\.registerRoute\("https:\/\/raw\.githubusercontent\.com\/parcel-bundler\/website\/01a1f7dd\/src\/assets\/parcel@3x\.png", new workbox\.strategies\.CacheFirst\({ plugins: \[new workbox\.cacheableResponse\.Plugin\({ statuses: \[ 0 \] }\)\] }\), 'GET'\);

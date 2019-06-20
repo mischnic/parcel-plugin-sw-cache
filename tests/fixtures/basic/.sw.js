@@ -11,7 +11,7 @@
  \* See https:\/\/goo\.gl\/2aRDsh
  \*\/
 
-importScripts\("https:\/\/storage\.googleapis\.com\/workbox-cdn\/releases\/[0-9]\.[0-9]\.[0-9]\/workbox-sw.js"\);
+importScripts\("https:\/\/storage\.googleapis\.com\/workbox-cdn\/releases\/[0-9]\.[0-9]\.[0-9]\/workbox-sw\.js"\);
 
 workbox\.core\.skipWaiting\(\);
 
