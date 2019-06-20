@@ -1,6 +1,6 @@
 # Parcel plugin for sw-caching
 
-A [Parcel](https://parceljs.org/) plugin to run [workbox-build](https://github.com/GoogleChrome/workbox) after every build.
+A [Parcel](https://parceljs.org/) plugin to run [workbox-build](https://github.com/GoogleChrome/workbox) after every build. **Requires at least Node 10**
 
 ```sh
 yarn add -D parcel-plugin-sw-cache
