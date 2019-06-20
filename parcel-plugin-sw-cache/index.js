@@ -35,7 +35,7 @@ function findPackageDir(dir) {
 function getConfigForEntry(file) {
 	const dir = path.dirname(file);
 	const pkgPath = findPackageDir(dir);
-	return require(path.join(dir, "package.json"));
+	return require(path.join(pkgPath, "package.json"));
 }
 
 module.exports = bundler => {
