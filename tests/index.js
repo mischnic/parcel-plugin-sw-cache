@@ -27,7 +27,7 @@ describe("test", function() {
 	it("basic tests", async function() {
 		await bundle("basic", "index.html");
 
-		const regex = new RegExp(await fs.readFile(getPath("basic", ".sw.js")));
+		const regex = new RegExp(await fs.readFile(getPath("basic", "__sw__.js")));
 		await delay(100);
 
 		const sw = await fs.readFile(
@@ -41,7 +41,7 @@ describe("test", function() {
 		await bundle("srcdir", "src/index.html");
 
 		const regex = new RegExp(
-			await fs.readFile(getPath("srcdir", ".sw.js"))
+			await fs.readFile(getPath("srcdir", "__sw__.js"))
 		);
 		await delay(100);
 
@@ -56,7 +56,7 @@ describe("test", function() {
 		await bundle("multiple-entrypoints", ["index.html", "page.html"]);
 
 		const regex = new RegExp(
-			await fs.readFile(getPath("multiple-entrypoints", ".sw.js"))
+			await fs.readFile(getPath("multiple-entrypoints", "__sw__.js"))
 		);
 		await delay(100);
 
@@ -70,7 +70,7 @@ describe("test", function() {
 	it("supports inject mode", async function() {
 		await bundle("inject", "index.html");
 		const regex = new RegExp(
-			await fs.readFile(getPath("inject", ".sw.js"))
+			await fs.readFile(getPath("inject", "__sw__.js"))
 		);
 		await delay(100);
 		const sw = await fs.readFile(
