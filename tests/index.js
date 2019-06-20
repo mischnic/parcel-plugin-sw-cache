@@ -96,5 +96,3 @@ describe("test", function() {
 		);
 	});
 });
-
-// "precache added assets"
